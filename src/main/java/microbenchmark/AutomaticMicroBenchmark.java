@@ -1,6 +1,8 @@
 package microbenchmark;
 
 import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.profile.GCProfiler;
+import org.openjdk.jmh.profile.StackProfiler;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
@@ -13,12 +15,12 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
-@BenchmarkMode(Mode.AverageTime)
+@BenchmarkMode(Mode.SampleTime)
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 5, time = 1)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @Fork(1)
-public class MicroBenchmark {
+public class AutomaticMicroBenchmark {
 
     int SIZE = 1_000;
     List<Integer> data;
@@ -26,10 +28,13 @@ public class MicroBenchmark {
     public static void main(String[] args) throws RunnerException {
 
         Options opt = new OptionsBuilder()
-                .include(MicroBenchmark.class.getSimpleName())
+                .include(AutomaticMicroBenchmark.class.getSimpleName())
                 .warmupIterations(5)
                 .measurementIterations(5)
                 .forks(1)
+                .jvmArgs("-server", "-Xms2048m", "-Xmx2048m")
+                .addProfiler(GCProfiler.class)
+                .addProfiler(StackProfiler.class)
                 .build();
 
         new Runner(opt).run();
@@ -45,13 +50,6 @@ public class MicroBenchmark {
 
     @Benchmark
     public List<Integer> classicSort() {
-        List<Integer> copy = new ArrayList<>(data);
-        Collections.sort(copy);
-        return copy;
-    }
-
-    @Benchmark
-    public List<Integer> parallelSort() {
         List<Integer> copy = new ArrayList<>(data);
         Collections.sort(copy);
         return copy;
