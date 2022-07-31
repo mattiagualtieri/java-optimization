@@ -1,8 +1,6 @@
 package microbenchmark;
 
 import org.openjdk.jmh.annotations.*;
-import org.openjdk.jmh.profile.GCProfiler;
-import org.openjdk.jmh.profile.StackProfiler;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
@@ -14,9 +12,20 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The final output with these configurations should be looking something like this:
+ *
+ * -------------------------------------------------------------------------------
+ * |  Benchmark                              Mode  Cnt   Score   Error   Units   |
+ * |  AutomaticMicroBenchmark.classicSort   thrpt    5  18,583 ± 1,705  ops/ms   |
+ * |  AutomaticMicroBenchmark.parallelSort  thrpt    5  12,635 ± 0,542  ops/ms   |
+ * -------------------------------------------------------------------------------
+ *
+ */
+
 @State(Scope.Benchmark)
-@BenchmarkMode(Mode.SampleTime)
-@Warmup(iterations = 5, time = 1)
+@BenchmarkMode(Mode.Throughput)
+@Warmup(iterations = 10, time = 1)
 @Measurement(iterations = 5, time = 1)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @Fork(1)
@@ -29,12 +38,6 @@ public class AutomaticMicroBenchmark {
 
         Options opt = new OptionsBuilder()
                 .include(AutomaticMicroBenchmark.class.getSimpleName())
-                .warmupIterations(5)
-                .measurementIterations(5)
-                .forks(1)
-                .jvmArgs("-server", "-Xms2048m", "-Xmx2048m")
-                .addProfiler(GCProfiler.class)
-                .addProfiler(StackProfiler.class)
                 .build();
 
         new Runner(opt).run();
@@ -50,6 +53,13 @@ public class AutomaticMicroBenchmark {
 
     @Benchmark
     public List<Integer> classicSort() {
+        List<Integer> copy = new ArrayList<>(data);
+        Collections.sort(copy);
+        return copy;
+    }
+
+    @Benchmark
+    public List<Integer> parallelSort() {
         List<Integer> copy = new ArrayList<>(data);
         Collections.sort(copy);
         return copy;
