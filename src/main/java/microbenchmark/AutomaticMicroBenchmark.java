@@ -1,6 +1,7 @@
 package microbenchmark;
 
 import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
@@ -17,14 +18,14 @@ import java.util.concurrent.TimeUnit;
  *
  * -------------------------------------------------------------------------------
  * |  Benchmark                              Mode  Cnt   Score   Error   Units   |
- * |  AutomaticMicroBenchmark.classicSort   thrpt    5  18,583 ± 1,705  ops/ms   |
- * |  AutomaticMicroBenchmark.parallelSort  thrpt    5  12,635 ± 0,542  ops/ms   |
+ * |  AutomaticMicroBenchmark.classicSort   thrpt    5  15,389 ± 0,725  ops/ms   |
+ * |  AutomaticMicroBenchmark.parallelSort  thrpt    5  17,038 ± 2,677  ops/ms   |
  * -------------------------------------------------------------------------------
  *
  */
 
 @State(Scope.Benchmark)
-@BenchmarkMode(Mode.Throughput)
+@BenchmarkMode(Mode.All)
 @Warmup(iterations = 10, time = 1)
 @Measurement(iterations = 5, time = 1)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
@@ -38,9 +39,12 @@ public class AutomaticMicroBenchmark {
 
         Options opt = new OptionsBuilder()
                 .include(AutomaticMicroBenchmark.class.getSimpleName())
+                .resultFormat(ResultFormatType.JSON)
+                .result("src/main/resources/benchmark-results/" + System.currentTimeMillis() + ".json")
                 .build();
 
         new Runner(opt).run();
+
     }
 
     @Setup
