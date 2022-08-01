@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @State(Scope.Benchmark)
-@BenchmarkMode(Mode.All)
+@BenchmarkMode(Mode.Throughput)
 @Warmup(iterations = 10, time = 1)
 @Measurement(iterations = 5, time = 1)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
