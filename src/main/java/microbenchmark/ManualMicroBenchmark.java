@@ -5,6 +5,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * The final output with these configurations should be looking something like this:
+ *
+ * -------------------------------------
+ * |  Result: 19606.38560111224 op/s   |
+ * -------------------------------------
+ *
+ */
+
 public class ManualMicroBenchmark {
 
     private static final int SIZE = 1_000;
