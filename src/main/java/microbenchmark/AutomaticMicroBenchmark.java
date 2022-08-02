@@ -18,8 +18,8 @@ import java.util.concurrent.TimeUnit;
  *
  * -------------------------------------------------------------------------------
  * |  Benchmark                              Mode  Cnt   Score   Error   Units   |
- * |  AutomaticMicroBenchmark.classicSort   thrpt    5  15,389 ± 0,725  ops/ms   |
- * |  AutomaticMicroBenchmark.parallelSort  thrpt    5  17,038 ± 2,677  ops/ms   |
+ * |  AutomaticMicroBenchmark.classicSort   thrpt    5  18,911 ± 0,636  ops/ms   |
+ * |  AutomaticMicroBenchmark.streamSort    thrpt    5  19,342 ± 1,144  ops/ms   |
  * -------------------------------------------------------------------------------
  *
  */
@@ -63,10 +63,9 @@ public class AutomaticMicroBenchmark {
     }
 
     @Benchmark
-    public List<Integer> parallelSort() {
-        List<Integer> copy = new ArrayList<>(data);
-        Collections.sort(copy);
-        return copy;
+    public List<Integer> streamSort() {
+        List<Integer> sorted = data.stream().sorted().toList();
+        return sorted;
     }
 
 }
