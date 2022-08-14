@@ -19,14 +19,8 @@ import java.util.concurrent.TimeUnit;
  * ----------------------------------------------------------------------------------------------------
  * |   Benchmark                                          Mode  Cnt       Score       Error   Units   |
  * ----------------------------------------------------------------------------------------------------
- * |   ArrayListVersusLinkedList.accessHeadArrayList     thrpt    5  758623,877 ± 17552,261  ops/ms   |
- * |   ArrayListVersusLinkedList.accessHeadLinkedList    thrpt    5  871233,317 ±  3830,908  ops/ms   |
- * ----------------------------------------------------------------------------------------------------
  * |   ArrayListVersusLinkedList.accessMiddleArrayList   thrpt    5  717299,705 ± 33600,716  ops/ms   |
  * |   ArrayListVersusLinkedList.accessMiddleLinkedList  thrpt    5      10,284 ±     0,749  ops/ms   |
- * ----------------------------------------------------------------------------------------------------
- * |   ArrayListVersusLinkedList.accessTailArrayList     thrpt    5  723130,792 ± 13028,458  ops/ms   |
- * |   ArrayListVersusLinkedList.accessTailLinkedList    thrpt    5  767751,140 ±  7863,887  ops/ms   |
  * ----------------------------------------------------------------------------------------------------
  * |   ArrayListVersusLinkedList.insertHeadArrayList     thrpt    5      30,601 ±    27,354  ops/ms   |
  * |   ArrayListVersusLinkedList.insertHeadLinkedList    thrpt    5    6207,210 ±   405,025  ops/ms   |
@@ -43,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 public class ArrayListVersusLinkedList {
 
     int SIZE = 100_000;
+    int VALUE;
     List<Integer> arrayList;
     List<Integer> linkedList;
 
@@ -56,27 +51,16 @@ public class ArrayListVersusLinkedList {
 
     }
 
-    @Setup()
+    @Setup
     public void setUp() {
         arrayList = new ArrayList<>();
         linkedList = new LinkedList<>();
+        VALUE = new Random().nextInt(Integer.MAX_VALUE);
         for (int i = 0; i < SIZE; i++) {
             int value = new Random().nextInt(Integer.MAX_VALUE);
             arrayList.add(value);
             linkedList.add(value);
         }
-    }
-
-    @Benchmark
-    public int accessHeadArrayList() {
-        int value = arrayList.get(0);
-        return value;
-    }
-
-    @Benchmark
-    public int accessHeadLinkedList() {
-        int value = linkedList.get(0);
-        return value;
     }
 
     @Benchmark
@@ -92,25 +76,13 @@ public class ArrayListVersusLinkedList {
     }
 
     @Benchmark
-    public int accessTailArrayList() {
-        int value = arrayList.get(SIZE - 1);
-        return value;
-    }
-
-    @Benchmark
-    public int accessTailLinkedList() {
-        int value = linkedList.get(SIZE - 1);
-        return value;
-    }
-
-    @Benchmark
     public void insertHeadArrayList() {
-        arrayList.add(0, 999);
+        arrayList.add(0, VALUE);
     }
 
     @Benchmark
     public void insertHeadLinkedList() {
-        linkedList.add(0, 999);
+        linkedList.add(0, VALUE);
     }
 
 }
