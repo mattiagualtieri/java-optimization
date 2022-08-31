@@ -33,14 +33,15 @@ public class CounterRaceCondition implements Runnable {
     public void run() {
         for (int i = 0; i < 1_000_000; i++) {
             this.counter.increment();
-            System.out.println("[" + Thread.currentThread().getName() + "] counter = " + this.counter);
             if (i == 1_000_000 - 1) {
                 System.out.println("[" + Thread.currentThread().getName() + "] counter = " + this.counter + " <-- last read");
+            } else {
+                System.out.println("[" + Thread.currentThread().getName() + "] counter = " + this.counter);
             }
         }
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Counter counter = new Counter();
         Thread t0 = new Thread(new CounterRaceCondition(counter));
         Thread t1 = new Thread(new CounterRaceCondition(counter));
