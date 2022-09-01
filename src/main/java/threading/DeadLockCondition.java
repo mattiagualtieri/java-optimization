@@ -23,6 +23,15 @@ import java.util.concurrent.TimeUnit;
  *    waiting for the other thread to release the lock.
  * 6. We have a "Dead Lock condition", the program will execute forever,
  *    while the 2 threads are trying to access locks.
+ *
+ * Output:
+ * [Thread-1] test1 started
+ * [Thread-2] test1 started
+ * [Thread-1] locked resource: s1
+ * [Thread-2] locked resource: s2
+ * [Thread-2] trying to lock resource: s1
+ * [Thread-1] trying to lock resource: s2
+ * 
  */
 
 public class DeadLockCondition extends Thread {
