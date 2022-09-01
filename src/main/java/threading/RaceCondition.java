@@ -21,11 +21,11 @@ package threading;
  *
  */
 
-public class CounterRaceCondition implements Runnable {
+public class RaceCondition implements Runnable {
 
     private Counter counter;
 
-    public CounterRaceCondition(Counter counter) {
+    public RaceCondition(Counter counter) {
         this.counter = counter;
     }
 
@@ -43,8 +43,8 @@ public class CounterRaceCondition implements Runnable {
 
     public static void main(String[] args) {
         Counter counter = new Counter();
-        Thread t0 = new Thread(new CounterRaceCondition(counter));
-        Thread t1 = new Thread(new CounterRaceCondition(counter));
+        Thread t0 = new Thread(new RaceCondition(counter));
+        Thread t1 = new Thread(new RaceCondition(counter));
         t0.start();
         t1.start();
     }
